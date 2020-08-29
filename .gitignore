@@ -1,0 +1,10 @@
+~*
+target/
+nb-configuration.xml
+nbproject/
+.idea/
+*.iml
+*.log
+*.log*
+builds/
+logs/

@@ -1,12 +1,9 @@
-
-
 package com.phyzicsz.rocket.reflection.vfs;
 
 import com.phyzicsz.rocket.reflection.Reflections;
 import com.phyzicsz.rocket.reflection.ReflectionsException;
 import com.phyzicsz.rocket.reflection.vfs.Vfs.Dir;
 import com.phyzicsz.rocket.reflection.vfs.Vfs.UrlType;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -15,12 +12,16 @@ import java.util.function.Predicate;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * UrlType to be used by Reflections library. This class handles the vfszip and
  * vfsfile protocol of JBOSS files.
  */
 public class UrlTypeVFS implements UrlType {
+
+    private static final Logger logger = LoggerFactory.getLogger(Reflections.class);
 
     public final static String[] REPLACE_EXTENSION = new String[]{".ear/", ".jar/", ".war/", ".sar/", ".har/", ".par/"};
 
@@ -40,10 +41,8 @@ public class UrlTypeVFS implements UrlType {
         } catch (IOException e) {
             try {
                 return new ZipDir(new JarFile(url.getFile()));
-            } catch (IOException e1) {
-                if (Reflections.log != null) {
-                    Reflections.log.warn("Could not get URL", e);
-                }
+            } catch (IOException ex) {
+                logger.warn("Could not get URL", ex);
             }
         }
         return null;

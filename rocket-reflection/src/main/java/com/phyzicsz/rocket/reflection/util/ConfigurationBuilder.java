@@ -1,9 +1,6 @@
-
-
 package com.phyzicsz.rocket.reflection.util;
 
 import com.phyzicsz.rocket.reflection.Configuration;
-import com.phyzicsz.rocket.reflection.Reflections;
 import com.phyzicsz.rocket.reflection.ReflectionsException;
 import com.phyzicsz.rocket.reflection.adapters.JavaReflectionAdapter;
 import com.phyzicsz.rocket.reflection.adapters.JavassistAdapter;
@@ -15,7 +12,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,15 +19,19 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * a fluent builder forConfiguration
  */
 public class ConfigurationBuilder implements Configuration {
 
+    private static final Logger logger = LoggerFactory.getLogger(ConfigurationBuilder.class);
+
     private List<Scanner> scanners;
     private List<URL> urls;
-    protected MetadataAdapter<?,?,?> metadataAdapter;
+    protected MetadataAdapter<?, ?, ?> metadataAdapter;
     private Predicate<String> inputsFilter;
     private ExecutorService executorService;
     private ClassLoader[] classLoaders;
@@ -168,6 +168,7 @@ public class ConfigurationBuilder implements Configuration {
 
     /**
      * set the scanners instances for scanning different metadata
+     *
      * @param scanners the scanners to be added
      * @return ConfigurationBuilder
      */
@@ -178,6 +179,7 @@ public class ConfigurationBuilder implements Configuration {
 
     /**
      * set the scanners instances for scanning different metadata
+     *
      * @param scanners the scanners to be added
      * @return this
      */
@@ -237,7 +239,7 @@ public class ConfigurationBuilder implements Configuration {
      * @return this
      */
     public ConfigurationBuilder addUrls(final URL... urls) {
-        this.urls.addAll(new HashSet<>(Arrays.asList(urls)));
+        this.urls.addAll(new ArrayList<>(Arrays.asList(urls)));
         return this;
     }
 
@@ -257,9 +259,7 @@ public class ConfigurationBuilder implements Configuration {
             try {
                 return (metadataAdapter = new JavassistAdapter());
             } catch (Throwable e) {
-                if (Reflections.log != null) {
-                    Reflections.log.warn("could not create JavassistAdapter, using JavaReflectionAdapter", e);
-                }
+                logger.warn("could not create JavassistAdapter, using JavaReflectionAdapter", e);
                 return (metadataAdapter = new JavaReflectionAdapter());
             }
         }

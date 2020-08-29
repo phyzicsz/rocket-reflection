@@ -1,18 +1,17 @@
-
-
 package com.phyzicsz.rocket.reflection.vfs;
 
 import com.phyzicsz.rocket.reflection.Reflections;
-
 import java.io.IOException;
 import java.util.jar.JarFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * an implementation of Vfs.Dir for
- * {@link java.util.zip.ZipFile}
+ * an implementation of Vfs.Dir for {@link java.util.zip.ZipFile}
  */
 public class ZipDir implements Vfs.Dir {
 
+    private static final Logger logger = LoggerFactory.getLogger(Reflections.class);
     final java.util.zip.ZipFile jarFile;
 
     public ZipDir(JarFile jarFile) {
@@ -40,9 +39,7 @@ public class ZipDir implements Vfs.Dir {
         try {
             jarFile.close();
         } catch (IOException e) {
-            if (Reflections.log != null) {
-                Reflections.log.warn("Could not close JarFile", e);
-            }
+            logger.warn("Could not close JarFile", e);
         }
     }
 

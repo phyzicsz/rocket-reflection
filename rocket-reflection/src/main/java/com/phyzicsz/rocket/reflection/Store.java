@@ -1,9 +1,7 @@
-
-
 package com.phyzicsz.rocket.reflection;
 
 import com.phyzicsz.rocket.reflection.scanners.Scanner;
-
+import static com.phyzicsz.rocket.reflection.util.Utils.index;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,8 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-import static com.phyzicsz.rocket.reflection.util.Utils.index;
 
 /**
  * stores metadata information in multimaps
@@ -34,7 +30,8 @@ public class Store {
 
     /**
      * return all indices
-     * @return 
+     *
+     * @return keySet
      */
     public Set<String> keySet() {
         return storeMap.keySet();
@@ -53,20 +50,22 @@ public class Store {
     }
 
     /**
-     * get the values stored for the given {@code index} and {@code keys}
-     * @param scannerClass
-     * @param key
-     * @return 
+     * get the values stored for the given {@code index}
+     *
+     * @param scannerClass scanner class
+     * @param key key
+     * @return Set of values for key
      */
     public Set<String> get(Class<?> scannerClass, String key) {
         return get(index(scannerClass), Collections.singletonList(key));
     }
 
     /**
-     * get the values stored for the given {@code index} and {@code keys}
-     * @param index
-     * @param key
-     * @return 
+     * get the values stored for the given {@code index}
+     *
+     * @param index index
+     * @param key key
+     * @return set for index
      */
     public Set<String> get(String index, String key) {
         return get(index, Collections.singletonList(key));
@@ -74,9 +73,10 @@ public class Store {
 
     /**
      * get the values stored for the given {@code index} and {@code keys}
-     * @param scannerClass
-     * @param keys
-     * @return 
+     *
+     * @param scannerClass the scanner class type
+     * @param keys the keys
+     * @return set set of values
      */
     public Set<String> get(Class<?> scannerClass, Collection<String> keys) {
         return get(index(scannerClass), keys);
@@ -100,9 +100,10 @@ public class Store {
     /**
      * recursively get the values stored for the given {@code index} and
      * {@code keys}, including keys
-     * @param scannerClass
-     * @param keys
-     * @return 
+     *
+     * @param scannerClass the scanner class
+     * @param keys the keys
+     * @return the set of values
      */
     public Set<String> getAllIncluding(Class<?> scannerClass, Collection<String> keys) {
         String index = index(scannerClass);
@@ -123,22 +124,22 @@ public class Store {
     }
 
     /**
-     * recursively get the values stored for the given {@code index} and
-     * {@code keys}, not including keys
-     * @param scannerClass
-     * @param key
-     * @return 
+     * recursively get the values stored for the given {@code index} not including keys
+     *
+     * @param scannerClass the scanner class
+     * @param key the key
+     * @return the set of values
      */
     public Set<String> getAll(Class<?> scannerClass, String key) {
         return getAllIncluding(scannerClass, get(scannerClass, key));
     }
 
     /**
-     * recursively get the values stored for the given {@code index} and
-     * {@code keys}, not including keys
-     * @param scannerClass
-     * @param keys
-     * @return 
+     * recursively get the values stored for the given {@code index} not including keys
+     *
+     * @param scannerClass the scanner class
+     * @param keys the keys
+     * @return the set of values
      */
     public Set<String> getAll(Class<?> scannerClass, Collection<String> keys) {
         return getAllIncluding(scannerClass, get(scannerClass, keys));

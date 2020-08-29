@@ -15,21 +15,21 @@ public interface Configuration {
     /**
      * the scanner instances used for scanning different metadata
      *
-     * @return
+     * @return the list of scanners
      */
     List<Scanner> getScanners();
 
     /**
      * the urls to be scanned
      *
-     * @return
+     * @return the list of URLs
      */
     List<URL> getUrls();
 
     /**
      * the metadata adapter used to fetch metadata from classes
      *
-     * @return
+     * @return the metadata adapter
      */
     @SuppressWarnings({"RawUseOfParameterizedType"})
     MetadataAdapter<?,?,?> getMetadataAdapter();
@@ -37,7 +37,7 @@ public interface Configuration {
     /**
      * get the fully qualified name filter used to filter types to be scanned
      *
-     * @return
+     * @return the Predicate
      */
     Predicate<String> getInputsFilter();
 
@@ -45,14 +45,14 @@ public interface Configuration {
      * * executor service used to scan files.if null, scanning is done in a
      * simple for loop
      *
-     * @return
+     * @return th executor service
      */
     ExecutorService getExecutorService();
 
     /**
      * get class loaders, might be used for resolving methods/fields
      *
-     * @return
+     * @return the class loaders
      */
     ClassLoader[] getClassLoaders();
 
@@ -60,7 +60,7 @@ public interface Configuration {
      * if true (default), expand super types after scanning, for super types
      * that were not scanned.
      *
-     * @return
+     * @return true or false if should expand super types
      */
     boolean shouldExpandSuperTypes();
 }

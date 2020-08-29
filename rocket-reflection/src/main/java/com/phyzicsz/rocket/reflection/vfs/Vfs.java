@@ -1,12 +1,9 @@
-
-
 package com.phyzicsz.rocket.reflection.vfs;
 
 import com.phyzicsz.rocket.reflection.Reflections;
 import com.phyzicsz.rocket.reflection.ReflectionsException;
 import com.phyzicsz.rocket.reflection.util.ClasspathHelper;
 import com.phyzicsz.rocket.reflection.util.Utils;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -23,9 +20,12 @@ import java.util.function.Predicate;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Vfs {
 
+    private static final Logger logger = LoggerFactory.getLogger(Reflections.class);
     private static List<UrlType> defaultUrlTypes = new ArrayList<>(Arrays.asList(DefaultUrlTypes.values()));
 
     /**
@@ -65,17 +65,17 @@ public abstract class Vfs {
     /**
      * the default url types that will be used when issuing
      *
-     * @return
+     * @return the list of URLTypes
      */
     public static List<UrlType> getDefaultUrlTypes() {
         return defaultUrlTypes;
     }
 
     /**
-     * * sets the static default url types.can be used to statically plug in
+     * sets the static default url types.can be used to statically plug in
      * urlTypes
      *
-     * @param urlTypes
+     * @param urlTypes default URL type
      */
     public static void setDefaultURLTypes(final List<UrlType> urlTypes) {
         defaultUrlTypes = urlTypes;
@@ -85,7 +85,7 @@ public abstract class Vfs {
      * * add a static default url types to the beginning of the default url
      * types list.can be used to statically plug in urlTypes
      *
-     * @param urlType
+     * @param urlType default URL type
      */
     public static void addDefaultURLTypes(UrlType urlType) {
         defaultUrlTypes.add(0, urlType);
@@ -94,8 +94,8 @@ public abstract class Vfs {
     /**
      * tries to create a Dir from the given url, using the defaultUrlTypes
      *
-     * @param url
-     * @return
+     * @param url URL
+     * @return Dir for a given URL
      */
     public static Dir fromURL(final URL url) {
         return fromURL(url, defaultUrlTypes);
@@ -104,9 +104,9 @@ public abstract class Vfs {
     /**
      * tries to create a Dir from the given url, using the given urlType
      *
-     * @param url
-     * @param urlTypes
-     * @return
+     * @param url URL
+     * @param urlTypes the URL type
+     * @return a Dir for the URL
      */
     public static Dir fromURL(final URL url, final List<UrlType> urlTypes) {
         for (UrlType type : urlTypes) {
@@ -118,9 +118,7 @@ public abstract class Vfs {
                     }
                 }
             } catch (Exception e) {
-                if (Reflections.log != null) {
-                    Reflections.log.warn("could not create Dir using " + type + " from url " + url.toExternalForm() + ". skipping.", e);
-                }
+                logger.warn("could not create Dir using {} from url. skipping.", type, url.toExternalForm(), e);
             }
         }
 
@@ -133,22 +131,22 @@ public abstract class Vfs {
     /**
      * tries to create a Dir from the given url, using the given urlType
      *
-     * @param url
-     * @param urlTypes
-     * @return
+     * @param url URL
+     * @param urlTypes the URL type
+     * @return a dir for the URL
      */
     public static Dir fromURL(final URL url, final UrlType... urlTypes) {
         return fromURL(url, Arrays.asList(urlTypes));
     }
 
     /**
-     * return an iterable of all Vfs.File in given
-     * urls, starting with given packagePrefix and matching nameFilter
+     * return an iterable of all Vfs.File in given urls, starting with given
+     * packagePrefix and matching nameFilter
      *
-     * @param inUrls
-     * @param packagePrefix
-     * @param nameFilter
-     * @return
+     * @param inUrls the URLs
+     * @param packagePrefix a package prefix
+     * @param nameFilter a name filter
+     * @return An iterable for the files in the URLs
      */
     public static Iterable<File> findFiles(final Collection<URL> inUrls, final String packagePrefix, final Predicate<String> nameFilter) {
         Predicate<File> fileNamePredicate = file -> {
@@ -165,12 +163,11 @@ public abstract class Vfs {
     }
 
     /**
-     * return an iterable of all Vfs.File in given
-     * urls, matching filePredicate
+     * return an iterable of all Vfs.File in given urls, matching filePredicate
      *
-     * @param urls
-     * @param filePredicate
-     * @return
+     * @param urls URLs
+     * @param filePredicate a matching predicate
+     * @return and Iterable for the Files
      */
     public static Iterable<File> findFiles(final Collection<URL> urls, final Predicate<File> filePredicate) {
         return () -> urls.stream()
@@ -178,9 +175,7 @@ public abstract class Vfs {
                     try {
                         return StreamSupport.stream(fromURL(url).getFiles().spliterator(), false);
                     } catch (Throwable e) {
-                        if (Reflections.log != null) {
-                            Reflections.log.error("could not findFiles for url. continuing. [" + url + "]", e);
-                        }
+                        logger.error("could not findFiles for url. continuing. [{}]", url, e);
                         return Stream.of();
                     }
                 })
@@ -190,8 +185,8 @@ public abstract class Vfs {
     /**
      * try to get {@link java.io.File} from ur
      *
-     * @param url
-     * @return
+     * @param url a URL
+     * @return a File handle for the URL
      */
     public static java.io.File getFile(URL url) {
         java.io.File file;
@@ -202,7 +197,8 @@ public abstract class Vfs {
             if ((file = new java.io.File(path)).exists()) {
                 return file;
             }
-        } catch (URISyntaxException ignored) {
+        } catch (URISyntaxException ex) {
+            logger.warn("uri syntax exception", ex);
         }
 
         try {
@@ -214,7 +210,8 @@ public abstract class Vfs {
                 return file;
             }
 
-        } catch (UnsupportedEncodingException ignored) {
+        } catch (UnsupportedEncodingException ex) {
+             logger.warn("unsupported encoding exception", ex);
         }
 
         try {
@@ -243,7 +240,8 @@ public abstract class Vfs {
                 return file;
             }
 
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            logger.warn("path error", ex);
         }
 
         return null;

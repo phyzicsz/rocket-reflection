@@ -1,5 +1,3 @@
-
-
 package com.phyzicsz.rocket.reflection;
 
 import static com.phyzicsz.rocket.reflection.ReflectionUtils.forName;
@@ -41,10 +39,11 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Reflections {
 
-    public static Logger log = Utils.findLogger(Reflections.class);
+    private static final Logger logger = LoggerFactory.getLogger(Reflections.class);
 
     protected final transient Configuration configuration;
     protected Store store;
@@ -83,14 +82,14 @@ public class Reflections {
     //
     protected void scan() {
         if (configuration.getUrls() == null || configuration.getUrls().isEmpty()) {
-            if (log != null) {
-                log.warn("given scan urls are empty. set urls in the configuration");
-            }
+
+            logger.warn("given scan urls are empty. set urls in the configuration");
+
             return;
         }
 
-        if (log != null && log.isTraceEnabled()) {
-            log.trace("going to scan these urls: {}", configuration.getUrls());
+        if (logger.isTraceEnabled()) {
+            logger.trace("going to scan these urls: {}", configuration.getUrls());
         }
 
         long time = System.currentTimeMillis();
@@ -102,8 +101,8 @@ public class Reflections {
             try {
                 if (executorService != null) {
                     futures.add(executorService.submit(() -> {
-                        if (log != null && log.isTraceEnabled()) {
-                            log.trace("[{}] scanning {}", Thread.currentThread().toString(), url);
+                        if (logger.isTraceEnabled()) {
+                            logger.trace("[{}] scanning {}", Thread.currentThread().toString(), url);
                         }
                         scan(url);
                     }));
@@ -112,9 +111,9 @@ public class Reflections {
                 }
                 scannedUrls++;
             } catch (ReflectionsException e) {
-                if (log != null) {
-                    log.warn("could not create Vfs.Dir from url. ignoring the exception and continuing", e);
-                }
+
+                logger.warn("could not create Vfs.Dir from url. ignoring the exception and continuing", e);
+
             }
         }
 
@@ -133,12 +132,11 @@ public class Reflections {
             executorService.shutdown();
         }
 
-        if (log != null) {
-            log.info(format("Reflections took %d ms to scan %d urls, producing %s %s",
-                    System.currentTimeMillis() - time, scannedUrls, producingDescription(store),
-                    executorService instanceof ThreadPoolExecutor
-                            ? format("[using %d cores]", ((ThreadPoolExecutor) executorService).getMaximumPoolSize()) : ""));
-        }
+        logger.info(format("Reflections took %d ms to scan %d urls, producing %s %s",
+                System.currentTimeMillis() - time, scannedUrls, producingDescription(store),
+                executorService instanceof ThreadPoolExecutor
+                        ? format("[using %d cores]", ((ThreadPoolExecutor) executorService).getMaximumPoolSize()) : ""));
+
     }
 
     private static String producingDescription(Store store) {
@@ -168,9 +166,9 @@ public class Reflections {
                                 classObject = scanner.scan(file, classObject, store);
                             }
                         } catch (Exception e) {
-                            if (log != null && log.isTraceEnabled()) {
-                                // SLF4J will filter out Throwables from the format string arguments.
-                                log.trace("could not scan file {} in url {} with scanner {}", file.getRelativePath(), url.toExternalForm(), scanner.getClass().getSimpleName(), e);
+                            if (logger.isTraceEnabled()) {
+
+                                logger.trace("could not scan file {} in url {} with scanner {}", file.getRelativePath(), url.toExternalForm(), scanner.getClass().getSimpleName(), e);
                             }
                         }
                     }
@@ -181,8 +179,6 @@ public class Reflections {
         }
     }
 
-  
-  
     /**
      * expand super types after scanning, for super types that were not scanned.
      * this is helpful in finding the transitive closure without scanning all
@@ -212,8 +208,8 @@ public class Reflections {
     private void expandSupertypes(Store store, String key, Class<?> type) {
         for (Class<?> supertype : ReflectionUtils.getSuperTypes(type)) {
             if (store.put(SubTypesScanner.class, supertype.getName(), key)) {
-                if (log != null && log.isTraceEnabled()) {
-                    log.trace("expanded subtype {} -> {}", supertype.getName(), key);
+                if (logger.isTraceEnabled()) {
+                    logger.trace("expanded subtype {} -> {}", supertype.getName(), key);
                 }
                 expandSupertypes(store, supertype.getName(), supertype);
             }
@@ -533,7 +529,7 @@ public class Reflections {
 
     /**
      * Get the congifuration.
-     * 
+     *
      * @return Configuration
      */
     public Configuration getConfiguration() {

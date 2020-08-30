@@ -1,17 +1,9 @@
 package com.phyzicsz.rocket.reflection.adapters;
 
-import javassist.bytecode.AccessFlag;
-import javassist.bytecode.AnnotationsAttribute;
-import javassist.bytecode.ClassFile;
-import javassist.bytecode.Descriptor;
-import javassist.bytecode.FieldInfo;
-import javassist.bytecode.MethodInfo;
-import javassist.bytecode.ParameterAnnotationsAttribute;
-import javassist.bytecode.annotation.Annotation;
 import com.phyzicsz.rocket.reflection.ReflectionsException;
 import com.phyzicsz.rocket.reflection.util.Utils;
+import static com.phyzicsz.rocket.reflection.util.Utils.join;
 import com.phyzicsz.rocket.reflection.vfs.Vfs;
-
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -23,13 +15,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
+import javassist.bytecode.AccessFlag;
 import static javassist.bytecode.AccessFlag.isPrivate;
 import static javassist.bytecode.AccessFlag.isProtected;
-import static com.phyzicsz.rocket.reflection.util.Utils.join;
+import javassist.bytecode.AnnotationsAttribute;
+import javassist.bytecode.ClassFile;
+import javassist.bytecode.Descriptor;
+import javassist.bytecode.FieldInfo;
+import javassist.bytecode.MethodInfo;
+import javassist.bytecode.ParameterAnnotationsAttribute;
+import javassist.bytecode.annotation.Annotation;
 
 /**
- *
+ * JavaAssist implementation of MetadataAdapter
+ * @author phyzicsz <phyzics.z@gmail.com>
  */
 public class JavassistAdapter implements MetadataAdapter<ClassFile, FieldInfo, MethodInfo> {
 

@@ -16,7 +16,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** */
+/**
+ * A class for Java Reflection.
+ * 
+ * @author phyzicsz <phyzics.z@gmail.com>
+ */
 public class JavaReflectionAdapter implements MetadataAdapter<Class<?>, Field, Member> {
 
     @Override
@@ -34,14 +38,14 @@ public class JavaReflectionAdapter implements MetadataAdapter<Class<?>, Field, M
 
     @Override
     public String getMethodName(Member method) {
-        return method instanceof Method ? method.getName() :
-                method instanceof Constructor ? "<init>" : null;
+        return method instanceof Method ? method.getName()
+                : method instanceof Constructor ? "<init>" : null;
     }
 
     @Override
     public List<String> getParameterNames(final Member member) {
-        Class<?>[] parameterTypes = member instanceof Method ? ((Method) member).getParameterTypes() :
-                member instanceof Constructor ? ((Constructor) member).getParameterTypes() : null;
+        Class<?>[] parameterTypes = member instanceof Method ? ((Method) member).getParameterTypes()
+                : member instanceof Constructor ? ((Constructor) member).getParameterTypes() : null;
 
         return parameterTypes != null ? Arrays.stream(parameterTypes).map(JavaReflectionAdapter::getName).collect(Collectors.toList()) : Collections.emptyList();
     }
@@ -58,17 +62,17 @@ public class JavaReflectionAdapter implements MetadataAdapter<Class<?>, Field, M
 
     @Override
     public List<String> getMethodAnnotationNames(Member method) {
-        Annotation[] annotations =
-                method instanceof Method ? ((Method) method).getDeclaredAnnotations() :
-                method instanceof Constructor ? ((Constructor) method).getDeclaredAnnotations() : null;
+        Annotation[] annotations
+                = method instanceof Method ? ((Method) method).getDeclaredAnnotations()
+                        : method instanceof Constructor ? ((Constructor) method).getDeclaredAnnotations() : null;
         return getAnnotationNames(annotations);
     }
 
     @Override
     public List<String> getParameterAnnotationNames(Member method, int parameterIndex) {
-        Annotation[][] annotations =
-                method instanceof Method ? ((Method) method).getParameterAnnotations() :
-                method instanceof Constructor ? ((Constructor) method).getParameterAnnotations() : null;
+        Annotation[][] annotations
+                = method instanceof Method ? ((Method) method).getParameterAnnotations()
+                        : method instanceof Constructor ? ((Constructor) method).getParameterAnnotations() : null;
 
         return getAnnotationNames(annotations != null ? annotations[parameterIndex] : null);
     }
@@ -85,7 +89,7 @@ public class JavaReflectionAdapter implements MetadataAdapter<Class<?>, Field, M
 
     @Override
     public Class<?> getOrCreateClassObject(Vfs.File file) throws Exception {
-        return getOrCreateClassObject(file,(ClassLoader[])null);
+        return getOrCreateClassObject(file, (ClassLoader[]) null);
     }
 
     public Class<?> getOrCreateClassObject(Vfs.File file, ClassLoader... loaders) throws Exception {
@@ -111,9 +115,9 @@ public class JavaReflectionAdapter implements MetadataAdapter<Class<?>, Field, M
     @SuppressWarnings("NullTernary")
     @Override
     public boolean isPublic(Object o) {
-        Integer mod =
-                o instanceof Class ? ((Class) o).getModifiers() :
-                o instanceof Member ? ((Member) o).getModifiers() : null;
+        Integer mod
+                = o instanceof Class ? ((Class) o).getModifiers()
+                        : o instanceof Member ? ((Member) o).getModifiers() : null;
 
         return mod != null && Modifier.isPublic(mod);
     }
@@ -124,7 +128,7 @@ public class JavaReflectionAdapter implements MetadataAdapter<Class<?>, Field, M
     }
 
     @Override
-    public String getSuperclassName(Class<?>cls) {
+    public String getSuperclassName(Class<?> cls) {
         Class<?> superclass = cls.getSuperclass();
         return superclass != null ? superclass.getName() : "";
     }
@@ -139,7 +143,7 @@ public class JavaReflectionAdapter implements MetadataAdapter<Class<?>, Field, M
     public boolean acceptsInput(String file) {
         return file.endsWith(".class");
     }
-    
+
     //
     private List<String> getAnnotationNames(Annotation[] annotations) {
         return Arrays.stream(annotations).map(annotation -> annotation.annotationType().getName()).collect(Collectors.toList());
@@ -149,7 +153,11 @@ public class JavaReflectionAdapter implements MetadataAdapter<Class<?>, Field, M
         if (type.isArray()) {
             try {
                 Class<?> cl = type;
-                int dim = 0; while (cl.isArray()) { dim++; cl = cl.getComponentType(); }
+                int dim = 0;
+                while (cl.isArray()) {
+                    dim++;
+                    cl = cl.getComponentType();
+                }
                 return cl.getName() + Utils.repeat("[]", dim);
             } catch (Throwable e) {
                 //

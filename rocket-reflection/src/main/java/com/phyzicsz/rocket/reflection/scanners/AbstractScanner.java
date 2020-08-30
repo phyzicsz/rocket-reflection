@@ -11,7 +11,8 @@ import com.phyzicsz.rocket.reflection.vfs.Vfs;
 import java.util.function.Predicate;
 
 /**
- *
+ * Abstract class for scanner.
+ * 
  */
 @SuppressWarnings({"RawUseOfParameterizedType"})
 public abstract class AbstractScanner implements Scanner {
@@ -73,6 +74,7 @@ public abstract class AbstractScanner implements Scanner {
         return fqn != null && resultFilter.test(fqn);
     }
 
+    @SuppressWarnings({"rawtypes"})
     protected MetadataAdapter getMetadataAdapter() {
         return configuration.getMetadataAdapter();
     }

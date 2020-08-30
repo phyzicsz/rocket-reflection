@@ -1,19 +1,19 @@
 package com.phyzicsz.rocket.reflection.scanners;
 
-import javassist.bytecode.CodeAttribute;
-import javassist.bytecode.LocalVariableAttribute;
-import javassist.bytecode.MethodInfo;
 import com.phyzicsz.rocket.reflection.Store;
 import com.phyzicsz.rocket.reflection.adapters.MetadataAdapter;
-
 import java.lang.reflect.Modifier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javassist.bytecode.CodeAttribute;
+import javassist.bytecode.LocalVariableAttribute;
+import javassist.bytecode.MethodInfo;
 
 /** scans methods/constructors and indexes parameter names */
 @SuppressWarnings("unchecked")
 public class MethodParameterNamesScanner extends AbstractScanner {
 
+    @SuppressWarnings({"rawtypes"})
     @Override
     public void scan(Object cls, Store store) {
         final MetadataAdapter md = getMetadataAdapter();

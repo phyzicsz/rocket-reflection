@@ -2,13 +2,13 @@ package com.phyzicsz.rocket.reflection.scanners;
 
 import com.phyzicsz.rocket.reflection.Store;
 import com.phyzicsz.rocket.reflection.adapters.MetadataAdapter;
-
 import java.util.List;
 
 /** scans methods/constructors and indexes parameters, return type and parameter annotations */
 @SuppressWarnings("unchecked")
 public class MethodParameterScanner extends AbstractScanner {
 
+    @SuppressWarnings({"rawtypes"})
     @Override
     public void scan(Object cls, Store store) {
         final MetadataAdapter md = getMetadataAdapter();

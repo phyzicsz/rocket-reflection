@@ -1,7 +1,6 @@
 package com.phyzicsz.rocket.reflection.scanners;
 
 import com.phyzicsz.rocket.reflection.Store;
-
 import java.util.List;
 
 /** scans for field's annotations */

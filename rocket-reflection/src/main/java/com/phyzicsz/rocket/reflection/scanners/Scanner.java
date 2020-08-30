@@ -3,11 +3,11 @@ package com.phyzicsz.rocket.reflection.scanners;
 import com.phyzicsz.rocket.reflection.Configuration;
 import com.phyzicsz.rocket.reflection.Store;
 import com.phyzicsz.rocket.reflection.vfs.Vfs;
-
 import java.util.function.Predicate;
 
 /**
- *
+ * Scanner interface.
+ * 
  */
 public interface Scanner {
 

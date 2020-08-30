@@ -180,14 +180,16 @@ public abstract class Utils {
         return scannerClass.getSimpleName();
     }
 
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static <T> Predicate<T> and(Predicate... predicates) {
-        return Arrays.stream(predicates).reduce(t -> true, Predicate<T>::and);
+        return Arrays.stream(predicates).reduce(t -> true, Predicate<? super T>::and);
     }
 
     public static String join(Collection<?> elements, String delimiter) {
         return elements.stream().map(Object::toString).collect(Collectors.joining(delimiter));
     }
 
+    @SafeVarargs
     public static <T> Set<T> filter(Collection<T> result, Predicate<? super T>... predicates) {
         return result.stream().filter(and(predicates)).collect(Collectors.toSet());
     }
@@ -196,6 +198,7 @@ public abstract class Utils {
         return result.stream().filter(predicate).collect(Collectors.toSet());
     }
 
+    @SafeVarargs
     public static <T> Set<T> filter(T[] result, Predicate<? super T>... predicates) {
         return Arrays.stream(result).filter(and(predicates)).collect(Collectors.toSet());
     }

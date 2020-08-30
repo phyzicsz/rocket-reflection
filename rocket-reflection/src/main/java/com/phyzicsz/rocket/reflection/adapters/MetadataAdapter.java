@@ -1,11 +1,10 @@
 package com.phyzicsz.rocket.reflection.adapters;
 
 import com.phyzicsz.rocket.reflection.vfs.Vfs;
-
 import java.util.List;
 
 /**
- *
+ * Metadata adapter.
  */
 public interface MetadataAdapter<C,F,M> {
 

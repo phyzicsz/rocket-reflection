@@ -251,6 +251,7 @@ public class ConfigurationBuilder implements Configuration {
      * the {@link JavassistAdapter} is preferred in terms of performance and
      * class loading.
      */
+    @SuppressWarnings({"rawtypes"})
     @Override
     public MetadataAdapter getMetadataAdapter() {
         if (metadataAdapter != null) {
@@ -271,6 +272,7 @@ public class ConfigurationBuilder implements Configuration {
      * @param metadataAdapter the adapter to be added
      * @return this
      */
+    @SuppressWarnings({"rawtypes"})
     public ConfigurationBuilder setMetadataAdapter(final MetadataAdapter metadataAdapter) {
         this.metadataAdapter = metadataAdapter;
         return this;

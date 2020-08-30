@@ -94,6 +94,7 @@ public abstract class ReflectionUtils {
      * get all constructors of given {@code type}, up the super class hierarchy,
      * optionally filtered by {@code predicates}
      */
+    @SuppressWarnings({"rawtypes"})
     public static Set<Constructor<?>> getAllConstructors(final Class<?> type, Predicate<? super Constructor>... predicates) {
         Set<Constructor<?>> result = new HashSet<>();
         for (Class<?> t : getAllSuperTypes(type)) {
@@ -106,6 +107,7 @@ public abstract class ReflectionUtils {
      * get constructors of given {@code type}, optionally filtered by
      * {@code predicates}
      */
+    @SuppressWarnings({"rawtypes"})
     public static Set<Constructor<?>> getConstructors(Class<?> t, Predicate<? super Constructor>... predicates) {
         return filter(t.getDeclaredConstructors(), predicates);
     }

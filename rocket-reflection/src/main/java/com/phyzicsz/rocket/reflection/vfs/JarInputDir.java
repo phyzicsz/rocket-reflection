@@ -2,7 +2,6 @@ package com.phyzicsz.rocket.reflection.vfs;
 
 import com.phyzicsz.rocket.reflection.ReflectionsException;
 import com.phyzicsz.rocket.reflection.util.Utils;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -10,7 +9,9 @@ import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 
 /**
- *
+ * Jar input dir implementation of Vfs.Dir
+ * 
+ * @author phyzicsz <phyzics.z@gmail.com>
  */
 public class JarInputDir implements Vfs.Dir {
     private final URL url;

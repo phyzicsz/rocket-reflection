@@ -94,6 +94,7 @@ public abstract class ClasspathHelper {
      *
      * @return the collection of URLs, not null
      */
+    @SuppressWarnings("JdkObsolete")
     public static Collection<URL> forResource(String resourceName, ClassLoader... classLoaders) {
         final List<URL> result = new ArrayList<>();
         final ClassLoader[] loaders = classLoaders(classLoaders);

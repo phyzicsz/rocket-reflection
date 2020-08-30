@@ -23,7 +23,7 @@ public class UrlTypeVFS implements UrlType {
 
     private static final Logger logger = LoggerFactory.getLogger(Reflections.class);
 
-    public final static String[] REPLACE_EXTENSION = new String[]{".ear/", ".jar/", ".war/", ".sar/", ".har/", ".par/"};
+    private final static String[] REPLACE_EXTENSION = new String[]{".ear/", ".jar/", ".war/", ".sar/", ".har/", ".par/"};
 
     final String VFSZIP = "vfszip";
     final String VFSFILE = "vfsfile";

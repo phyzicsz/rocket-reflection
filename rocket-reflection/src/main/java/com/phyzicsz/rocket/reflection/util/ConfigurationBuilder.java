@@ -2,12 +2,12 @@ package com.phyzicsz.rocket.reflection.util;
 
 import com.phyzicsz.rocket.reflection.Configuration;
 import com.phyzicsz.rocket.reflection.ReflectionsException;
-import com.phyzicsz.rocket.reflection.adapters.JavaReflectionAdapter;
 import com.phyzicsz.rocket.reflection.adapters.JavassistAdapter;
 import com.phyzicsz.rocket.reflection.adapters.MetadataAdapter;
 import com.phyzicsz.rocket.reflection.scanners.Scanner;
 import com.phyzicsz.rocket.reflection.scanners.SubTypesScanner;
 import com.phyzicsz.rocket.reflection.scanners.TypeAnnotationsScanner;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,9 +112,15 @@ public class ConfigurationBuilder implements Configuration {
             } else if (param instanceof Class) {
                 if (Scanner.class.isAssignableFrom((Class) param)) {
                     try {
-                        builder.addScanners(((Scanner) ((Class) param).newInstance()));
-                    } catch (IllegalAccessException | InstantiationException e) {
-                        /*fallback*/ }
+                        builder.addScanners(((Scanner) ((Class) param).getDeclaredConstructor().newInstance()));
+                    } catch (NoSuchMethodException
+                            | SecurityException
+                            | InstantiationException
+                            | IllegalAccessException
+                            | IllegalArgumentException
+                            | InvocationTargetException ex) {
+                        //fallback
+                    }
                 }
                 builder.addUrls(ClasspathHelper.forClass((Class) param, classLoaders));
                 filter.includePackage(((Class) param));
@@ -257,12 +263,7 @@ public class ConfigurationBuilder implements Configuration {
         if (metadataAdapter != null) {
             return metadataAdapter;
         } else {
-            try {
-                return (metadataAdapter = new JavassistAdapter());
-            } catch (Throwable e) {
-                logger.warn("could not create JavassistAdapter, using JavaReflectionAdapter", e);
-                return (metadataAdapter = new JavaReflectionAdapter());
-            }
+            return (metadataAdapter = new JavassistAdapter());
         }
     }
 

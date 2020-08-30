@@ -33,6 +33,7 @@ public class JarInputFile implements Vfs.File {
         return entry.getName();
     }
 
+    @SuppressWarnings("InputStreamSlowMultibyteRead")
     @Override
     public InputStream openInputStream() throws IOException {
         return new InputStream() {

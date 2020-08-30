@@ -48,7 +48,6 @@
         
         <!-- Dependencies -->
         <guava.version>29.0-jre</guava.version>
-        <jackson.version>2.11.2</jackson.version>
         <javassist.version>3.26.0-GA</javassist.version>
         <jboss.vfs.version>3.2.12.Final</jboss.vfs.version>
         <logback.version>1.2.3</logback.version>

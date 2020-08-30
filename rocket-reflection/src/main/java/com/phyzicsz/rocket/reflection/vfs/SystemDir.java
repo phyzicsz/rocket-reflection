@@ -1,11 +1,13 @@
 package com.phyzicsz.rocket.reflection.vfs;
 
 import com.phyzicsz.rocket.reflection.ReflectionsException;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class SystemDir implements Vfs.Dir {
@@ -34,10 +36,12 @@ public class SystemDir implements Vfs.Dir {
         }
         return () -> {
             try {
-                return Files.walk(file.toPath())
-                        .filter(Files::isRegularFile)
+                try(Stream<Path> stream = Files.walk(file.toPath())) {
+                    return stream.filter(Files::isRegularFile)
                         .map(path -> (Vfs.File) new SystemFile(SystemDir.this, path.toFile()))
-                        .iterator();
+                        .collect(Collectors.toList())
+                        .iterator();  
+                }
             } catch (IOException e) {
                 throw new ReflectionsException("could not get files for " + file, e);
             }

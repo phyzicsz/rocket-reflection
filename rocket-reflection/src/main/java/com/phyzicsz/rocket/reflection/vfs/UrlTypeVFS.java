@@ -1,7 +1,7 @@
 package com.phyzicsz.rocket.reflection.vfs;
 
-import com.phyzicsz.rocket.reflection.Reflections;
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import com.phyzicsz.rocket.reflection.RocketReflection;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import com.phyzicsz.rocket.reflection.vfs.Vfs.Dir;
 import com.phyzicsz.rocket.reflection.vfs.Vfs.UrlType;
 import java.io.File;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public class UrlTypeVFS implements UrlType {
 
-    private static final Logger logger = LoggerFactory.getLogger(Reflections.class);
+    private static final Logger logger = LoggerFactory.getLogger(RocketReflection.class);
 
     private final static String[] REPLACE_EXTENSION = new String[]{".ear/", ".jar/", ".war/", ".sar/", ".har/", ".par/"};
 
@@ -72,7 +72,7 @@ public class UrlTypeVFS implements UrlType {
             }
         }
 
-        throw new ReflectionsException("Unable to identify the real zip file in path '" + path + "'.");
+        throw new ReflectionException("Unable to identify the real zip file in path '" + path + "'.");
     }
 
     int findFirstMatchOfDeployableExtention(String path, int pos) {

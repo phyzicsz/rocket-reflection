@@ -1,6 +1,8 @@
 package com.phyzicsz.rocket.reflection;
 
 
+import com.phyzicsz.rocket.reflection.util.ReflectionUtils;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import com.phyzicsz.rocket.reflection.TestModel.AC1;
 import com.phyzicsz.rocket.reflection.TestModel.AC1n;
 import com.phyzicsz.rocket.reflection.TestModel.AC2;
@@ -58,11 +60,11 @@ import org.junit.jupiter.api.Test;
 @SuppressWarnings("unchecked")
 public class ReflectionsTest {
     public static final FilterBuilder TestModelFilter = new FilterBuilder().include("com.phyzicsz.rocket.reflection.TestModel\\$.*");
-    static Reflections reflections;
+    static RocketReflection reflections;
 
     @BeforeAll
     public static void init() {
-        reflections = new Reflections(new ConfigurationBuilder()
+        reflections = new RocketReflection(new ConfigurationBuilder()
                 .setUrls(Collections.singletonList(ClasspathHelper.forClass(TestModel.class)))
                 .filterInputsBy(TestModelFilter)
                 .setScanners(
@@ -293,9 +295,9 @@ public class ReflectionsTest {
     @Test
     public void testScannerNotConfigured() {
         try {
-            new Reflections(TestModel.class, TestModelFilter).getMethodsAnnotatedWith(AC1.class);
+            new RocketReflection(TestModel.class, TestModelFilter).getMethodsAnnotatedWith(AC1.class);
             fail();
-        } catch (ReflectionsException e) {
+        } catch (ReflectionException e) {
             assertEquals(e.getMessage(), "Scanner " + MethodAnnotationsScanner.class.getSimpleName() + " was not configured");
         }
     }

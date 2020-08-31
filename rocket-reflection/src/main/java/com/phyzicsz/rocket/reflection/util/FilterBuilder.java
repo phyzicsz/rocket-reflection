@@ -1,7 +1,7 @@
 package com.phyzicsz.rocket.reflection.util;
 
 import com.google.common.base.Splitter;
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -188,7 +188,7 @@ public class FilterBuilder implements Predicate<String> {
                         filter = new Exclude(pattern);
                         break;
                     default:
-                        throw new ReflectionsException("includeExclude should start with either + or -");
+                        throw new ReflectionException("includeExclude should start with either + or -");
                 }
 
                 filters.add(filter);
@@ -234,7 +234,7 @@ public class FilterBuilder implements Predicate<String> {
                         filter = new Exclude(pattern);
                         break;
                     default:
-                        throw new ReflectionsException("includeExclude should start with either + or -");
+                        throw new ReflectionException("includeExclude should start with either + or -");
                 }
 
                 filters.add(filter);

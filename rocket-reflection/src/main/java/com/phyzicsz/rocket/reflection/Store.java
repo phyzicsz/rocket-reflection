@@ -1,5 +1,6 @@
 package com.phyzicsz.rocket.reflection;
 
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import com.phyzicsz.rocket.reflection.scanners.Scanner;
 import static com.phyzicsz.rocket.reflection.util.Utils.index;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class Store {
     private Map<String, Collection<String>> get(String index) {
         Map<String, Collection<String>> mmap = storeMap.get(index);
         if (mmap == null) {
-            throw new ReflectionsException("Scanner " + index + " was not configured");
+            throw new ReflectionException("Scanner " + index + " was not configured");
         }
         return mmap;
     }

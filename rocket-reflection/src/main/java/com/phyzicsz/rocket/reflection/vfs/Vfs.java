@@ -1,7 +1,7 @@
 package com.phyzicsz.rocket.reflection.vfs;
 
-import com.phyzicsz.rocket.reflection.Reflections;
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import com.phyzicsz.rocket.reflection.RocketReflection;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import com.phyzicsz.rocket.reflection.util.ClasspathHelper;
 import com.phyzicsz.rocket.reflection.util.Utils;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class Vfs {
 
-    private static final Logger logger = LoggerFactory.getLogger(Reflections.class);
+    private static final Logger logger = LoggerFactory.getLogger(RocketReflection.class);
     private static List<UrlType> defaultUrlTypes = new ArrayList<>(Arrays.asList(DefaultUrlTypes.values()));
 
     /**
@@ -122,7 +122,7 @@ public abstract class Vfs {
             }
         }
 
-        throw new ReflectionsException("could not create Vfs.Dir from url, no matching UrlType was found [" + url.toExternalForm() + "]\n"
+        throw new ReflectionException("could not create Vfs.Dir from url, no matching UrlType was found [" + url.toExternalForm() + "]\n"
                 + "either use fromURL(final URL url, final List<UrlType> urlTypes) or "
                 + "use the static setDefaultURLTypes(final List<UrlType> urlTypes) or addDefaultURLTypes(UrlType urlType) "
                 + "with your specialized UrlType.");

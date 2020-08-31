@@ -3,7 +3,7 @@
 package com.phyzicsz.rocket.reflection.scanners;
 
 import com.phyzicsz.rocket.reflection.Configuration;
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import com.phyzicsz.rocket.reflection.Store;
 import com.phyzicsz.rocket.reflection.adapters.MetadataAdapter;
 import com.phyzicsz.rocket.reflection.util.Utils;
@@ -31,7 +31,7 @@ public abstract class AbstractScanner implements Scanner {
             try {
                 classObject = configuration.getMetadataAdapter().getOrCreateClassObject(file);
             } catch (Exception e) {
-                throw new ReflectionsException("could not create class object from file " + file.getRelativePath(), e);
+                throw new ReflectionException("could not create class object from file " + file.getRelativePath(), e);
             }
         }
         scan(classObject, store);

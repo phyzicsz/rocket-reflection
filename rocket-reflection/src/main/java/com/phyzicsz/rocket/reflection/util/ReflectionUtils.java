@@ -1,7 +1,8 @@
 
 
-package com.phyzicsz.rocket.reflection;
+package com.phyzicsz.rocket.reflection.util;
 
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import com.phyzicsz.rocket.reflection.util.ClasspathHelper;
 import static com.phyzicsz.rocket.reflection.util.Utils.filter;
 import java.lang.annotation.Annotation;
@@ -357,24 +358,24 @@ public abstract class ReflectionUtils {
                 type = typeName;
             }
 
-            List<ReflectionsException> reflectionsExceptions = new ArrayList<>();
+            List<ReflectionException> reflectionsExceptions = new ArrayList<>();
             for (ClassLoader classLoader : ClasspathHelper.classLoaders(classLoaders)) {
                 if (type.contains("[")) {
                     try {
                         return Class.forName(type, false, classLoader);
                     } catch (ClassNotFoundException e) {
-                        reflectionsExceptions.add(new ReflectionsException("could not get type for name " + typeName, e));
+                        reflectionsExceptions.add(new ReflectionException("could not get type for name " + typeName, e));
                     }
                 }
                 try {
                     return classLoader.loadClass(type);
                 } catch (ClassNotFoundException e) {
-                    reflectionsExceptions.add(new ReflectionsException("could not get type for name " + typeName, e));
+                    reflectionsExceptions.add(new ReflectionException("could not get type for name " + typeName, e));
                 }
             }
 
             if (logger.isTraceEnabled()) {
-                for (ReflectionsException reflectionsException : reflectionsExceptions) {
+                for (ReflectionException reflectionsException : reflectionsExceptions) {
                     logger.trace("could not get type for name " + typeName + " from any class loader", reflectionsException);
                 }
             }
@@ -452,7 +453,7 @@ public abstract class ReflectionUtils {
                         return false;
                     }
                 } catch (Exception e) {
-                    throw new ReflectionsException(String.format("could not invoke method %s on annotation %s", method.getName(), annotation1.annotationType()), e);
+                    throw new ReflectionException(String.format("could not invoke method %s on annotation %s", method.getName(), annotation1.annotationType()), e);
                 }
             }
             return true;

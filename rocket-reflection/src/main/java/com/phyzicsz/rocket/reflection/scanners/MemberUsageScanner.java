@@ -12,7 +12,7 @@ import javassist.expr.ExprEditor;
 import javassist.expr.FieldAccess;
 import javassist.expr.MethodCall;
 import javassist.expr.NewExpr;
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import com.phyzicsz.rocket.reflection.Store;
 import com.phyzicsz.rocket.reflection.util.ClasspathHelper;
 import static com.phyzicsz.rocket.reflection.util.Utils.join;
@@ -35,7 +35,7 @@ public class MemberUsageScanner extends AbstractScanner {
             }
             ctClass.detach();
         } catch (Exception e) {
-            throw new ReflectionsException("Could not scan method usage for " + getMetadataAdapter().getClassName(cls), e);
+            throw new ReflectionException("Could not scan method usage for " + getMetadataAdapter().getClassName(cls), e);
         }
     }
 
@@ -50,7 +50,7 @@ public class MemberUsageScanner extends AbstractScanner {
                     put(store, e.getConstructor().getDeclaringClass().getName() + "." + "<init>" +
                             "(" + parameterNames(e.getConstructor().getMethodInfo()) + ")", e.getLineNumber(), key);
                 } catch (NotFoundException e1) {
-                    throw new ReflectionsException("Could not find new instance usage in " + key, e1);
+                    throw new ReflectionException("Could not find new instance usage in " + key, e1);
                 }
             }
 
@@ -60,7 +60,7 @@ public class MemberUsageScanner extends AbstractScanner {
                     put(store, m.getMethod().getDeclaringClass().getName() + "." + m.getMethodName() +
                             "(" + parameterNames(m.getMethod().getMethodInfo()) + ")", m.getLineNumber(), key);
                 } catch (NotFoundException e) {
-                    throw new ReflectionsException("Could not find member " + m.getClassName() + " in " + key, e);
+                    throw new ReflectionException("Could not find member " + m.getClassName() + " in " + key, e);
                 }
             }
 
@@ -70,7 +70,7 @@ public class MemberUsageScanner extends AbstractScanner {
                     put(store, c.getConstructor().getDeclaringClass().getName() + "." + "<init>" +
                             "(" + parameterNames(c.getConstructor().getMethodInfo()) + ")", c.getLineNumber(), key);
                 } catch (NotFoundException e) {
-                    throw new ReflectionsException("Could not find member " + c.getClassName() + " in " + key, e);
+                    throw new ReflectionException("Could not find member " + c.getClassName() + " in " + key, e);
                 }
             }
 
@@ -79,7 +79,7 @@ public class MemberUsageScanner extends AbstractScanner {
                 try {
                     put(store, f.getField().getDeclaringClass().getName() + "." + f.getFieldName(), f.getLineNumber(), key);
                 } catch (NotFoundException e) {
-                    throw new ReflectionsException("Could not find member " + f.getFieldName() + " in " + key, e);
+                    throw new ReflectionException("Could not find member " + f.getFieldName() + " in " + key, e);
                 }
             }
         });

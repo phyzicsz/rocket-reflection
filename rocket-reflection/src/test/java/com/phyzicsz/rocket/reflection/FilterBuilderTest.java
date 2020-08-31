@@ -37,7 +37,7 @@ public class FilterBuilderTest {
 
     @Test
     public void test_includePackagebyClass() {
-        FilterBuilder filter = new FilterBuilder().includePackage(Reflections.class);
+        FilterBuilder filter = new FilterBuilder().includePackage(RocketReflection.class);
         assertThat(filter.test("com.phyzicsz.rocket.reflection.Reflections")).isTrue();
         assertThat(filter.test("com.phyzicsz.rocket.reflection.foo.Reflections")).isTrue();
         assertThat(filter.test("org.foobar.Reflections")).isFalse();
@@ -72,7 +72,7 @@ public class FilterBuilderTest {
 
     @Test
     public void test_excludePackageByClass() {
-        FilterBuilder filter = new FilterBuilder().excludePackage(Reflections.class);
+        FilterBuilder filter = new FilterBuilder().excludePackage(RocketReflection.class);
         assertThat(filter.test("com.phyzicsz.rocket.reflection.Reflections")).isFalse();
         assertThat(filter.test("com.phyzicsz.rocket.reflection.foo.Reflections")).isFalse();
         assertThat(filter.test("org.foobar.Reflections")).isTrue();

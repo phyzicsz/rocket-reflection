@@ -1,6 +1,6 @@
 package com.phyzicsz.rocket.reflection;
 
-import com.phyzicsz.rocket.reflection.Reflections;
+import com.phyzicsz.rocket.reflection.RocketReflection;
 import com.phyzicsz.rocket.reflection.scanners.FieldAnnotationsScanner;
 import com.phyzicsz.rocket.reflection.scanners.MemberUsageScanner;
 import com.phyzicsz.rocket.reflection.scanners.MethodAnnotationsScanner;
@@ -19,7 +19,7 @@ public class ReflectionsParallelTest extends ReflectionsTest {
 
     @BeforeAll
     public static void init() {
-        reflections = new Reflections(new ConfigurationBuilder()
+        reflections = new RocketReflection(new ConfigurationBuilder()
                 .setUrls(Collections.singletonList(ClasspathHelper.forClass(TestModel.class)))
                 .filterInputsBy(TestModelFilter)
                 .setScanners(

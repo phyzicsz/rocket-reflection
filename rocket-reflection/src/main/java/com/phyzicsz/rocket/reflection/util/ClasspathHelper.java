@@ -1,7 +1,7 @@
 package com.phyzicsz.rocket.reflection.util;
 
 import com.google.common.base.Splitter;
-import com.phyzicsz.rocket.reflection.Reflections;
+import com.phyzicsz.rocket.reflection.RocketReflection;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -46,7 +46,7 @@ public abstract class ClasspathHelper {
      * @return the static library class loader, may be null
      */
     public static ClassLoader staticClassLoader() {
-        return Reflections.class.getClassLoader();
+        return RocketReflection.class.getClassLoader();
     }
 
     /**

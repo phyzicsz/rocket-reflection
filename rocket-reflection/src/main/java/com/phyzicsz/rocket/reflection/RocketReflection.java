@@ -1,9 +1,11 @@
 package com.phyzicsz.rocket.reflection;
 
-import static com.phyzicsz.rocket.reflection.ReflectionUtils.forName;
-import static com.phyzicsz.rocket.reflection.ReflectionUtils.forNames;
-import static com.phyzicsz.rocket.reflection.ReflectionUtils.withAnnotation;
-import static com.phyzicsz.rocket.reflection.ReflectionUtils.withAnyParameterAnnotation;
+import com.phyzicsz.rocket.reflection.util.ReflectionUtils;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
+import static com.phyzicsz.rocket.reflection.util.ReflectionUtils.forName;
+import static com.phyzicsz.rocket.reflection.util.ReflectionUtils.forNames;
+import static com.phyzicsz.rocket.reflection.util.ReflectionUtils.withAnnotation;
+import static com.phyzicsz.rocket.reflection.util.ReflectionUtils.withAnyParameterAnnotation;
 import com.phyzicsz.rocket.reflection.scanners.FieldAnnotationsScanner;
 import com.phyzicsz.rocket.reflection.scanners.MemberUsageScanner;
 import com.phyzicsz.rocket.reflection.scanners.MethodAnnotationsScanner;
@@ -41,14 +43,14 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Reflections {
+public class RocketReflection {
 
-    private static final Logger logger = LoggerFactory.getLogger(Reflections.class);
+    private static final Logger logger = LoggerFactory.getLogger(RocketReflection.class);
 
     protected final transient Configuration configuration;
     protected Store store;
 
-    public Reflections(final Configuration configuration) {
+    public RocketReflection(final Configuration configuration) {
         this.configuration = configuration;
         store = new Store(configuration);
 
@@ -66,15 +68,15 @@ public class Reflections {
         }
     }
 
-    public Reflections(final String prefix, final Scanner... scanners) {
+    public RocketReflection(final String prefix, final Scanner... scanners) {
         this((Object) prefix, scanners);
     }
 
-    public Reflections(final Object... params) {
+    public RocketReflection(final Object... params) {
         this(ConfigurationBuilder.build(params));
     }
 
-    protected Reflections() {
+    protected RocketReflection() {
         configuration = new ConfigurationBuilder();
         store = new Store(configuration);
     }
@@ -110,7 +112,7 @@ public class Reflections {
                     scan(url);
                 }
                 scannedUrls++;
-            } catch (ReflectionsException e) {
+            } catch (ReflectionException e) {
 
                 logger.warn("could not create Vfs.Dir from url. ignoring the exception and continuing", e);
 
@@ -513,7 +515,7 @@ public class Reflections {
     public Set<String> getAllTypes() {
         Set<String> allTypes = new HashSet<>(store.getAll(SubTypesScanner.class, Object.class.getName()));
         if (allTypes.isEmpty()) {
-            throw new ReflectionsException("Couldn't find subtypes of Object. "
+            throw new ReflectionException("Couldn't find subtypes of Object. "
                     + "Make sure SubTypesScanner initialized to include Object class - new SubTypesScanner(false)");
         }
         return allTypes;

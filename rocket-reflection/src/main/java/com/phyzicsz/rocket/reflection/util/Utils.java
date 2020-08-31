@@ -1,7 +1,7 @@
 package com.phyzicsz.rocket.reflection.util;
 
-import static com.phyzicsz.rocket.reflection.ReflectionUtils.forName;
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import static com.phyzicsz.rocket.reflection.util.ReflectionUtils.forName;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +48,7 @@ public abstract class Utils {
         return file;
     }
 
-    public static Member getMemberFromDescriptor(String descriptor, ClassLoader... classLoaders) throws ReflectionsException {
+    public static Member getMemberFromDescriptor(String descriptor, ClassLoader... classLoaders) throws ReflectionException {
         int p0 = descriptor.lastIndexOf('(');
         String memberKey = p0 != -1 ? descriptor.substring(0, p0) : descriptor;
         String methodParameters = p0 != -1 ? descriptor.substring(p0 + 1, descriptor.lastIndexOf(')')) : "";
@@ -77,7 +77,7 @@ public abstract class Utils {
                 aClass = aClass.getSuperclass();
             }
         }
-        throw new ReflectionsException("Can't resolve member named " + memberName + " for class " + className);
+        throw new ReflectionException("Can't resolve member named " + memberName + " for class " + className);
     }
 
     public static Set<Method> getMethodsFromDescriptors(Iterable<String> annotatedWith, ClassLoader... classLoaders) {
@@ -111,8 +111,8 @@ public abstract class Utils {
         for (String value : values) {
             try {
                 result.add(Utils.getMemberFromDescriptor(value, classLoaders));
-            } catch (ReflectionsException e) {
-                throw new ReflectionsException("Can't resolve member named " + value, e);
+            } catch (ReflectionException e) {
+                throw new ReflectionException("Can't resolve member named " + value, e);
             }
         }
         return result;
@@ -125,7 +125,7 @@ public abstract class Utils {
         try {
             return forName(className, classLoaders).getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {
-            throw new ReflectionsException("Can't resolve field named " + fieldName, e);
+            throw new ReflectionException("Can't resolve field named " + fieldName, e);
         }
     }
 

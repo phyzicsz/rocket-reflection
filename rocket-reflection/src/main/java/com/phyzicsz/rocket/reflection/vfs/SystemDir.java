@@ -1,6 +1,6 @@
 package com.phyzicsz.rocket.reflection.vfs;
 
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,7 +43,7 @@ public class SystemDir implements Vfs.Dir {
                         .iterator();  
                 }
             } catch (IOException e) {
-                throw new ReflectionsException("could not get files for " + file, e);
+                throw new ReflectionException("could not get files for " + file, e);
             }
         };
     }

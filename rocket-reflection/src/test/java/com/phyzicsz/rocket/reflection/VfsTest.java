@@ -1,6 +1,6 @@
 package com.phyzicsz.rocket.reflection;
 
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import javassist.bytecode.ClassFile;
 import com.phyzicsz.rocket.reflection.adapters.JavassistAdapter;
 import com.phyzicsz.rocket.reflection.util.ClasspathHelper;
@@ -75,7 +75,7 @@ public class VfsTest {
         try {
             testVfsDir(Vfs.DefaultUrlTypes.jarInputStream.createDir(url));
             fail();
-        } catch (ReflectionsException e) {
+        } catch (ReflectionException e) {
             // expected
         }
 

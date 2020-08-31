@@ -1,5 +1,6 @@
 package com.phyzicsz.rocket.reflection;
 
+import com.phyzicsz.rocket.reflection.util.ReflectionUtils;
 import com.phyzicsz.rocket.reflection.MoreTestsModel.CyclicAnnotation;
 import com.phyzicsz.rocket.reflection.MoreTestsModel.Meta;
 import com.phyzicsz.rocket.reflection.MoreTestsModel.MultiName;
@@ -28,7 +29,7 @@ public class MoreTests {
 
     @Test
     public void test_cyclic_annotation() {
-        Reflections reflections = new Reflections(MoreTestsModel.class);
+        RocketReflection reflections = new RocketReflection(MoreTestsModel.class);
 //        assertThat(reflections.getTypesAnnotatedWith(CyclicAnnotation.class),
 //                are(CyclicAnnotation.class));
         
@@ -38,7 +39,7 @@ public class MoreTests {
 
     @Test
     public void no_exception_when_configured_scanner_store_is_empty() {
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
+        RocketReflection reflections = new RocketReflection(new ConfigurationBuilder()
                 .setUrls(ClasspathHelper.forPackage("my.project.prefix"))
                 .setScanners(new SubTypesScanner(), new TypeAnnotationsScanner())
                 .filterInputsBy(new FilterBuilder().includePackage("my.project.prefix")));
@@ -48,7 +49,7 @@ public class MoreTests {
 
     @Test
     public void getAllAnnotated_returns_meta_annotations() {
-        Reflections reflections = new Reflections(MoreTestsModel.class);
+        RocketReflection reflections = new RocketReflection(MoreTestsModel.class);
         for (Class<?> type: reflections.getTypesAnnotatedWith(Meta.class)) {
             Set<Annotation> allAnnotations = ReflectionUtils.getAllAnnotations(type);
             List<? extends Class<? extends Annotation>> collect = allAnnotations.stream().map(Annotation::annotationType).collect(Collectors.toList());
@@ -68,14 +69,14 @@ public class MoreTests {
 
     @Test
     public void resources_scanner_filters_classes() {
-        Reflections reflections = new Reflections(new ResourcesScanner());
+        RocketReflection reflections = new RocketReflection(new ResourcesScanner());
         Set<String> keys = reflections.getStore().keys(ResourcesScanner.class.getSimpleName());
         assertTrue(keys.stream().noneMatch(res -> res.endsWith(".class")));
     }
 
     @Test
     public void test_repeatable() {
-        Reflections ref = new Reflections(MoreTestsModel.class);
+        RocketReflection ref = new RocketReflection(MoreTestsModel.class);
         Set<Class<?>> clazzes = ref.getTypesAnnotatedWith(Name.class);
         assertTrue(clazzes.contains(SingleName.class));
         assertFalse(clazzes.contains(MultiName.class));
@@ -87,7 +88,7 @@ public class MoreTests {
 
     @Test
     public void test_method_param_names_not_local_vars() throws NoSuchMethodException {
-        Reflections reflections = new Reflections(MoreTestsModel.class, new MethodParameterNamesScanner());
+        RocketReflection reflections = new RocketReflection(MoreTestsModel.class, new MethodParameterNamesScanner());
 
         Class<ParamNames> clazz = ParamNames.class;
         assertEquals(reflections.getConstructorParamNames(clazz.getConstructor(String.class)).toString(),

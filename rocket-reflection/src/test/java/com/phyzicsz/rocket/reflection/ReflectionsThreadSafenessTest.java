@@ -1,6 +1,6 @@
 package com.phyzicsz.rocket.reflection;
 
-import com.phyzicsz.rocket.reflection.Reflections;
+import com.phyzicsz.rocket.reflection.RocketReflection;
 import com.phyzicsz.rocket.reflection.scanners.SubTypesScanner;
 import com.phyzicsz.rocket.reflection.util.ClasspathHelper;
 import com.phyzicsz.rocket.reflection.util.ConfigurationBuilder;
@@ -26,7 +26,7 @@ public class ReflectionsThreadSafenessTest {
     public void reflections_scan_is_thread_safe() throws Exception {
 
         Callable<Set<Class<? extends Logger>>> callable = () -> {
-            final Reflections reflections = new Reflections(new ConfigurationBuilder()
+            final RocketReflection reflections = new RocketReflection(new ConfigurationBuilder()
                     .setUrls(singletonList(ClasspathHelper.forClass(Logger.class)))
                     .setScanners(new SubTypesScanner(false)));
 

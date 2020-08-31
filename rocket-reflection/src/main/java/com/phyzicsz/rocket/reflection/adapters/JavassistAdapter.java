@@ -1,6 +1,6 @@
 package com.phyzicsz.rocket.reflection.adapters;
 
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import com.phyzicsz.rocket.reflection.util.Utils;
 import static com.phyzicsz.rocket.reflection.util.Utils.join;
 import com.phyzicsz.rocket.reflection.vfs.Vfs;
@@ -116,7 +116,7 @@ public class JavassistAdapter implements MetadataAdapter<ClassFile, FieldInfo, M
             DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
             return new ClassFile(dis);
         } catch (IOException e) {
-            throw new ReflectionsException("could not create class file from " + file.getName(), e);
+            throw new ReflectionException("could not create class file from " + file.getName(), e);
         } finally {
             Utils.close(inputStream);
         }

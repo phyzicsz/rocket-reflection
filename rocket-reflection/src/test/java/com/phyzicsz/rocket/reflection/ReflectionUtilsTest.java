@@ -1,7 +1,8 @@
 package com.phyzicsz.rocket.reflection;
 
 
-import static com.phyzicsz.rocket.reflection.ReflectionUtils.*;
+import com.phyzicsz.rocket.reflection.util.ReflectionUtils;
+import static com.phyzicsz.rocket.reflection.util.ReflectionUtils.*;
 import static com.phyzicsz.rocket.reflection.ReflectionsTest.are;
 import com.phyzicsz.rocket.reflection.scanners.FieldAnnotationsScanner;
 import java.lang.annotation.Annotation;
@@ -126,7 +127,7 @@ public class ReflectionUtilsTest {
 
     @Test
     public void getAllAndReflections() {
-        Reflections reflections = new Reflections(TestModel.class, new FieldAnnotationsScanner());
+        RocketReflection reflections = new RocketReflection(TestModel.class, new FieldAnnotationsScanner());
 
         Set<Field> af1 = reflections.getFieldsAnnotatedWith(TestModel.AF1.class);
         Set<? extends Field> allFields = ReflectionUtils.getAll(af1, withModifier(Modifier.PROTECTED));

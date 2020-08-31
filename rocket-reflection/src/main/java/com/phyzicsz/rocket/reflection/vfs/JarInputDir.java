@@ -1,6 +1,6 @@
 package com.phyzicsz.rocket.reflection.vfs;
 
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import com.phyzicsz.rocket.reflection.util.Utils;
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +34,7 @@ public class JarInputDir implements Vfs.Dir {
 
             {
                 try { jarInputStream = new JarInputStream(url.openConnection().getInputStream()); }
-                catch (Exception e) { throw new ReflectionsException("Could not open url connection", e); }
+                catch (Exception e) { throw new ReflectionException("Could not open url connection", e); }
             }
 
             Vfs.File entry = null;
@@ -66,7 +66,7 @@ public class JarInputDir implements Vfs.Dir {
                             return new JarInputFile(entry, JarInputDir.this, cursor, nextCursor);
                         }
                     } catch (IOException e) {
-                        throw new ReflectionsException("could not get next zip entry", e);
+                        throw new ReflectionException("could not get next zip entry", e);
                     }
                 }
             }

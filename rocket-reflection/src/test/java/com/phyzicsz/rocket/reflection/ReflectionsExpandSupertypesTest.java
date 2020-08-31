@@ -32,7 +32,7 @@ public class ReflectionsExpandSupertypesTest {
 
     @Test
     public void testExpandSupertypes() throws Exception {
-        Reflections refExpand = new Reflections(new ConfigurationBuilder().
+        RocketReflection refExpand = new RocketReflection(new ConfigurationBuilder().
                 setUrls(ClasspathHelper.forClass(TestModel.ScannedScope.C.class)).
                 filterInputsBy(inputsFilter));
         assertTrue(refExpand.getConfiguration().shouldExpandSuperTypes());
@@ -43,7 +43,7 @@ public class ReflectionsExpandSupertypesTest {
 
     @Test
     public void testNotExpandSupertypes() throws Exception {
-        Reflections refDontExpand = new Reflections(new ConfigurationBuilder().
+        RocketReflection refDontExpand = new RocketReflection(new ConfigurationBuilder().
                 setUrls(ClasspathHelper.forClass(TestModel.ScannedScope.C.class)).
                 filterInputsBy(inputsFilter).
                 setExpandSuperTypes(false));

@@ -1,6 +1,6 @@
 package com.phyzicsz.rocket.reflection.vfs;
 
-import com.phyzicsz.rocket.reflection.Reflections;
+import com.phyzicsz.rocket.reflection.RocketReflection;
 import java.io.IOException;
 import java.util.jar.JarFile;
 import org.slf4j.Logger;
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ZipDir implements Vfs.Dir {
 
-    private static final Logger logger = LoggerFactory.getLogger(Reflections.class);
+    private static final Logger logger = LoggerFactory.getLogger(RocketReflection.class);
     final java.util.zip.ZipFile jarFile;
 
     public ZipDir(JarFile jarFile) {

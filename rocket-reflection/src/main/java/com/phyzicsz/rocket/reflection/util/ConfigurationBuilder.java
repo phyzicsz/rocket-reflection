@@ -1,7 +1,7 @@
 package com.phyzicsz.rocket.reflection.util;
 
 import com.phyzicsz.rocket.reflection.Configuration;
-import com.phyzicsz.rocket.reflection.ReflectionsException;
+import com.phyzicsz.rocket.reflection.exception.ReflectionException;
 import com.phyzicsz.rocket.reflection.adapters.JavassistAdapter;
 import com.phyzicsz.rocket.reflection.adapters.MetadataAdapter;
 import com.phyzicsz.rocket.reflection.scanners.Scanner;
@@ -134,7 +134,7 @@ public class ConfigurationBuilder implements Configuration {
             } else if (param instanceof ExecutorService) {
                 builder.setExecutorService((ExecutorService) param);
             } else {
-                throw new ReflectionsException("could not use param " + param);
+                throw new ReflectionException("could not use param " + param);
             }
         }
 
